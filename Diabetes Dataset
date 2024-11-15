@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 import matplotlib.pyplot as plt
 
 # Load dataset
-data = pd.read_csv("diabetes BY Dr.NG.csv")
+data = pd.read_csv("/content/diabetes.csv")
 
 print(data.info())
 print(data.describe())
