@@ -91,3 +91,34 @@ plt.xlabel('Coefficient Value')
 plt.ylabel('Feature')
 plt.title('Feature Importance in Lasso Regression')
 plt.show()
+
+
+
+
+
+
+import pandas as pd
+
+# Define function for outlier detection using IQR
+def detect_outliers_iqr(df, column):
+    Q1 = df[column].quantile(0.25)
+    Q3 = df[column].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Identify outliers
+    outliers = df[(df[column] < lower_bound) | (df[column] > upper_bound)]
+
+    return outliers, lower_bound, upper_bound
+
+# Detect outliers in Odometer and Price columns
+odometer_outliers, odo_lower, odo_upper = detect_outliers_iqr(data, 'odometer')
+price_outliers, price_lower, price_upper = detect_outliers_iqr(data, 'price')
+
+print(f"Odometer outliers: {len(odometer_outliers)}")
+print(f"Price outliers: {len(price_outliers)}")
+
+# Remove outliers
+df_cleaned = data[(data['odometer'] >= odo_lower) & (data['odometer'] <= odo_upper)]
+df_cleaned = df_cleaned[(df_cleaned['price'] >= price_lower) & (df_cleaned['price'] <= price_upper)]
