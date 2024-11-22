@@ -1,0 +1,51 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+path="/content/Social_Network_Ads.csv"
+data=pd.read_csv(path)
+data.head(5)
+
+
+from sklearn import preprocessing
+le=preprocessing.LabelEncoder()
+data['Gender']=le.fit_transform(data['Gender'])
+
+
+x=data[['Age','EstimatedSalary','Gender']]
+y=data['Purchased']
+print(x,y)
+
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+
+print(x_train)
+print(x_test)
+
+#import the class
+from sklearn.linear_model import LogisticRegression as logisticregression
+
+#instantiate the model (using the default parameters)
+logres=logisticregression()
+
+#fit the model with data
+logres.fit(x_train,y_train)#75% data for analysis
+
+#
+y_pred=logres.predict(x_test) # 25% of data is used for testing
+print(y_pred)
+
+y_test.values
+
+y_pred
+
+from sklearn import metrics
+cnf_matrix = metrics.confusion_matrix(y_test, y_pred)
+cnf_matrix
+
+print("Accuracy:", metrics.accuracy_score(y_test,y_pred))
+print("Precision:",metrics.precision_score(y_test,y_pred))
+print("Recall:",metrics.recall_score(y_test,y_pred))
+print("F1 score:",metrics.f1_score(y_test,y_pred))
